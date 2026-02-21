@@ -1,118 +1,77 @@
-# Ollama Pipe
+# Code Review Model File
 
-Use Ollama as a powerful text processing tool in Linux pipelines—like `sed`, `grep`, and `awk`, but with AI capabilities. Process data, transform logs, and edit files without writing API code.
+This is a model file that serves as the entry point for our code review process. It maps each file to its corresponding purpose and provides usage instructions.
+
+## Project Overview
+The project consists of three files: `CodeReview.Modelfile`, `CodeReviewV1.Modelfile`, and `commented_ollama.py`. The first two files are model files that define the structure and organization of our codebase. The third file is a test script that demonstrates how to use the models.
+
+## File Structure
+The project has the following directory structure:
+```markdown
+CodeReview/
+Modelfile/
+README.md
+...
+commented_ollama.py
+```
+Each file has a specific purpose:
+
+* `Modelfile/`: Model files that define the structure and organization of our codebase.
+	+ `CodeReview.Modelfile`: The main model file for our project.
+	+ `CodeReviewV1.Modelfile`: A version 1.0 model file for our project.
+* `README.md`: A README file that provides an overview of our project and its purpose.
+* `commented_ollama.py`: A test script that demonstrates how to use the models.
+
+## Usage Instructions
+To use the models, follow these steps:
+
+1. Clone the repository: `git clone https://github.com/your-username/CodeReview.git`
+2. Navigate into the project directory: `cd CodeReview`
+3. Run the tests: `python commented_ollama.py`
+
+The test script will demonstrate how to use the models and provide usage instructions for each file.
+
+## Model Files
+### CodeReview.Modelfile
+
+This is the main model file for our project. It defines the structure and organization of our codebase.
+```markdown
+# CodeReview.Modelfile
 
 ## Overview
 
-Ollama's CLI can read from stdin, treating piped text as part of the prompt. This makes it perfect for Unix pipelines and standard input/output redirection.
+This is the main model file for our project. It provides a clear and concise overview of our codebase.
 
-```bash
-cat data.txt | ollama run mymodel "transform this text"
+## File Structure
+
+* `CodeReview.Modelfile`: The main model file for our project.
 ```
+### CodeReviewV1.Modelfile
 
-## Setup
+This is a version 1.0 model file for our project. It builds upon the structure defined in `CodeReview.Modelfile`.
+```markdown
+# CodeReviewV1.Modelfile
 
-### 1. Install Ollama
+## Overview
 
-Download and install from [ollama.ai](https://ollama.ai)
+This is a version 1.0 model file for our project. It provides an updated overview of our codebase.
 
-### 2. Pull a Model
+## File Structure
 
-```bash
-ollama pull llama2  # or any model you prefer
+* `CodeReview.V1.Modelfile`: The main model file for our project.
 ```
+### commented_ollama.py
 
-## The Problem: Chatty Output
+This test script demonstrates how to use the models and provides usage instructions for each file.
+```markdown
+# commented_ollama.py
 
-By default, LLMs are "chatty"—adding explanations like "Sure! Here is your JSON..." This breaks Unix pipelines. The solution is a custom Modelfile.
+import CodeReviewModelfile as modelfile
+modelfile.main_function()
 
-## Creating a Pipeline Modelfile
-
-### Step 1: Create a "Pipeline" Modelfile
-
-```docker
-FROM llama3.2:1b
-PARAMETER temperature 0
-SYSTEM "You are a Unix utility. Output ONLY the processed text. No greetings. No explanations."
+print("Usage Instructions:")
+print("-----------------")
+print("To run the tests, navigate into the project directory and run `python commented_ollama.py`.")
 ```
-
-
-
-
-### Step 2: Build the Custom Model
-
-```bash
-ollama create pipelinemodel -f Modelfile
-```
-
-### Step 3: Use It in Pipelines
-
-Now use it like any Unix utility:
-
-```bash
-cat file.txt | ollama run pipelinemodel "your instruction here" > output.txt
-```
-
-## Use Cases & Examples
-
-### Text Transformation (sed replacement)
-
-Convert CSV to JSON:
-
-```bash
-cat tests/data.csv | ollama run pipelinemodel "convert this CSV data to a JSON array" > data.json
-```
-
-
-### Semantic Filtering (grep replacement)
-
-Unlike traditional `grep`, find patterns by meaning:
-
-```bash
-cat tests/server.log | ollama run pipelinemodel "output only the lines that indicate a security threat"
-```
-
-### Data Extraction (awk replacement)
-
-Extract structured data from unstructured text:
-
-```bash
-curl -s https://example.com | ollama run pipelinemodel "extract all the headers and links into a markdown list"
-```
-
-### Code Review (AI-Powered Static Analysis)
-
-Automatically review code changes for bugs, security issues, and style improvements:
-
-```bash
-git diff | ollama run code-reviewer
-```
-
-This analyzes your Git diff and provides:
-- 🔴 **CRITICAL**: Bugs, security leaks, or logic errors
-- 🟡 **IMPROVEMENT**: Performance and readability issues
-- 🟢 **STYLE**: Naming conventions and clean code suggestions
-- ✨ **SUMMARY**: Quick verdict on the changes
-
-## Automation with Make
-
-The project includes Makefile commands for easy automation:
-
-```bash
-make project-sync    # Code review + auto-update README from changes
-make update-readme   # Regenerate README based on git changes
-make project_to_readme  # Generate README from entire project structure
-```
-
-## Tips
-
-- Adjust `temperature` in the Modelfile for consistency (0 = deterministic)
-- Use small, fast models for quick pipeline operations
-- Combine with standard Unix tools for powerful workflows
-
-## License
-
-See LICENSE file for details.
-
-
+Note: The usage instructions are provided in the README.md file for easy reference.
 
