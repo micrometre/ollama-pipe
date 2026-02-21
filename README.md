@@ -85,6 +85,30 @@ Extract structured data from unstructured text:
 curl -s https://example.com | ollama run pipelinemodel "extract all the headers and links into a markdown list"
 ```
 
+### Code Review (AI-Powered Static Analysis)
+
+Automatically review code changes for bugs, security issues, and style improvements:
+
+```bash
+git diff | ollama run code-reviewer
+```
+
+This analyzes your Git diff and provides:
+- 🔴 **CRITICAL**: Bugs, security leaks, or logic errors
+- 🟡 **IMPROVEMENT**: Performance and readability issues
+- 🟢 **STYLE**: Naming conventions and clean code suggestions
+- ✨ **SUMMARY**: Quick verdict on the changes
+
+## Automation with Make
+
+The project includes Makefile commands for easy automation:
+
+```bash
+make project-sync    # Code review + auto-update README from changes
+make update-readme   # Regenerate README based on git changes
+make project_to_readme  # Generate README from entire project structure
+```
+
 ## Tips
 
 - Adjust `temperature` in the Modelfile for consistency (0 = deterministic)
