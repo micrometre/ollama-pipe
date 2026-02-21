@@ -1,19 +1,34 @@
-## Use Ollama like sed, grep, or awk in a Linux pipeline without writing code for an API.
+# Ollama Pipe
 
+Use Ollama as a powerful text processing tool in Linux pipelines—like `sed`, `grep`, and `awk`, but with AI capabilities. Process data, transform logs, and edit files without writing API code.
 
-## Use the Ollama CLI's ability to read from stdin.
+## Overview
 
-## pipeing text into Ollama, it treats that text as part of the prompt. 
+Ollama's CLI can read from stdin, treating piped text as part of the prompt. This makes it perfect for Unix pipelines and standard input/output redirection.
 
-## This allows  to process data, transform logs, or edit files using standard Unix redirection.
+```bash
+cat data.txt | ollama run mymodel "transform this text"
+```
 
+## Setup
 
-## Using a Modelfile for a "Cleaner" Pipeline
-### The problem with the commands above is that the LLM might be "chatty" (e.g., "Sure! Here is your JSON..."). To use it like a true Linux utility, 
-### you need a Modelfile that strips away the chatter.
+### 1. Install Ollama
 
-## 1. Create a "Pipeline" Modelfile:
+Download and install from [ollama.ai](https://ollama.ai)
 
+### 2. Pull a Model
+
+```bash
+ollama pull llama2  # or any model you prefer
+```
+
+## The Problem: Chatty Output
+
+By default, LLMs are "chatty"—adding explanations like "Sure! Here is your JSON..." This breaks Unix pipelines. The solution is a custom Modelfile.
+
+## Creating a Pipeline Modelfile
+
+### Step 1: Create a "Pipeline" Modelfile
 
 ```docker
 FROM llama3.2:1b
@@ -22,42 +37,67 @@ SYSTEM "You are a Unix utility. Output ONLY the processed text. No greetings. No
 ```
 
 
-## 2. Build it:
+```docker
+FROM llama3.2:1b
+PARAMETER temperature 0
+SYSTEM "You are a Unix utility. Output ONLY the processed text. No greetings. No explanations."
+```
+
+### Step 2: Build the Custom Model
 
 ```bash
 ollama create pipelinemodel -f Modelfile
 ```
 
+### Step 3: Use It in Pipelines
 
-###  Use it in a pipe seamlessly:
+Now use it like any Unix utility:
 
-
-```Bash
-cat python_example.py | ollama run pipelinemodel "add comments to every line" > commented_code.py
+```bash
+cat file.txt | ollama run pipelinemodel "your instruction here" > output.txt
 ```
 
+## Use Cases & Examples
 
-### The sed Replacement (Text Transformation) If you want to change the format of a file (e.g., converting a CSV to JSON):
+### Text Transformation (sed replacement)
+
+Convert CSV to JSON:
 
 ```bash
 cat tests/data.csv | ollama run pipelinemodel "convert this CSV data to a JSON array" > data.json
 ```
 
+Add comments to code:
 
+```bash
+cat python_example.py | ollama run pipelinemodel "add comments to every line" > commented_code.py
+```
 
-### The grep Replacement (Semantic Filtering) Standard grep looks for literal strings. Ollama can "grep" for meaning:
+### Semantic Filtering (grep replacement)
+
+Unlike traditional `grep`, find patterns by meaning:
 
 ```bash
 cat tests/server.log | ollama run pipelinemodel "output only the lines that indicate a security threat"
 ```
 
+### Data Extraction (awk replacement)
 
+Extract structured data from unstructured text:
 
-### The awk Replacement (Data Extraction) If you have messy text and want to extract specific fields:
-
-```Bash
+```bash
 curl -s https://example.com | ollama run pipelinemodel "extract all the headers and links into a markdown list"
 ```
+
+## Tips
+
+- Adjust `temperature` in the Modelfile for consistency (0 = deterministic)
+- Use small, fast models for quick pipeline operations
+- Combine with standard Unix tools for powerful workflows
+
+## License
+
+See LICENSE file for details.
 
 
 
