@@ -38,7 +38,6 @@ SYSTEM "You are a Unix utility. Output ONLY the processed text. No greetings. No
 
 
 
-
 ### Step 2: Build the Custom Model
 
 ```bash
