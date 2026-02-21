@@ -1,30 +1,63 @@
-# DocGen Project
-================
+## Use Ollama like sed, grep, or awk in a Linux pipeline without writing code for an API.
 
-## Overview
 
-DocGen is a Python library system that allows users to manage and display their book inventory. It provides a simple example of how to create classes, add books, and show the inventory.
+## Use the Ollama CLI's ability to read from stdin.
 
-## File Structure
+## pipeing text into Ollama, it treats that text as part of the prompt. 
 
-The project consists of the following files:
+## This allows  to process data, transform logs, or edit files using standard Unix redirection.
 
-* `./DocGen.Modelfile`: The main model file for the library system.
-* `./docs/PROJECT_README.md`: A README file that describes the project's purpose and usage.
-* `./Pipeline.Modelfile`: A pipeline file that contains the code logic for managing the library system.
-* `./tests`: A directory containing test files for the library system.
-	+ `./tests/server.log`: A log file for testing server-side functionality.
-	+ `./tests/data.csv` and `./tests/data.json`: Sample data files for testing book inventory management.
-	+ `./tests/python_example.py`: An example Python script that demonstrates how to use the library system.
 
-## Usage Instructions
+## Using a Modelfile for a "Cleaner" Pipeline
+### The problem with the commands above is that the LLM might be "chatty" (e.g., "Sure! Here is your JSON..."). To use it like a true Linux utility, 
+### you need a Modelfile that strips away the chatter.
 
-To use DocGen, follow these steps:
+## 1. Create a "Pipeline" Modelfile:
 
-1. Clone the repository: `git clone https://github.com/username/DocGen.git`
-2. Navigate into the project directory: `cd DocGen`
-3. Run the pipeline file: `python Pipeline.Modelfile.py` (assuming it's a Python script)
-4. Use the example Python script in `tests/python_example.py` to add books and show the inventory.
 
-Note: This README.md will be updated as new files are added or existing ones modified.
+```docker
+FROM llama3.2:1b
+PARAMETER temperature 0
+SYSTEM "You are a Unix utility. Output ONLY the processed text. No greetings. No explanations."
+```
+
+
+## 2. Build it:
+
+```bash
+ollama create pipelinemodel -f Modelfile
+```
+
+
+###  Use it in a pipe seamlessly:
+
+
+```Bash
+cat python_example.py | ollama run pipelinemodel "add comments to every line" > commented_code.py
+```
+
+
+### The sed Replacement (Text Transformation) If you want to change the format of a file (e.g., converting a CSV to JSON):
+
+```bash
+cat tests/data.csv | ollama run pipelinemodel "convert this CSV data to a JSON array" > data.json
+```
+
+
+
+### The grep Replacement (Semantic Filtering) Standard grep looks for literal strings. Ollama can "grep" for meaning:
+
+```bash
+cat tests/server.log | ollama run pipelinemodel "output only the lines that indicate a security threat"
+```
+
+
+
+### The awk Replacement (Data Extraction) If you have messy text and want to extract specific fields:
+
+```Bash
+curl -s https://example.com | ollama run pipelinemodel "extract all the headers and links into a markdown list"
+```
+
+
 
