@@ -20,7 +20,7 @@ help:
 create_pipeline_model:
 	@echo "Creating model '$(PIPELINE_MODEL_NAME)' from $(PIPELINE_MODEFILE)..."
 	@ollama rm $(PIPELINE_MODEL_NAME) 2>/dev/null || true
-	ollama create $(PIPELINE_MODEL_NAME) -f "$(MAKEFILE_DIR)$(PIPELINE_MODEFILE)"
+	ollama create $(PIPELINE_MODEL_NAME) -f  "$(MAKEFILE_DIR)$(PIPELINE_MODEFILE)"
 	@echo "Model created successfully!"
 
 clean_pipeline_model:
