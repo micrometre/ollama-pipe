@@ -63,11 +63,6 @@ Convert CSV to JSON:
 cat tests/data.csv | ollama run pipelinemodel "convert this CSV data to a JSON array" > data.json
 ```
 
-Add comments to code:
-
-```bash
-cat python_example.py | ollama run pipelinemodel "add comments to every line" > commented_code.py
-```
 
 ### Semantic Filtering (grep replacement)
 
