@@ -1,0 +1,11 @@
+car_id,make,model,year,fuel_type,transmission,horsepower,price_usd
+1,Toyota,Camry,2022,Gasoline,Automatic,203,28500
+2,Tesla,Model 3,2023,Electric,Direct Drive,283,42000
+3,Ford,F-150,2021,Gasoline,Automatic,400,45000
+4,Honda,Civic,2020,Gasoline,Manual,158,22000
+5,BMW,3 Series,2022,Diesel,Automatic,255,43500
+6,Hyundai,Ioniq 5,2023,Electric,Direct Drive,225,48000
+7,Porsche,911,2023,Gasoline,PDK,379,106000
+8,Chevrolet,Tahoe,2021,Gasoline,Automatic,355,52000
+9,Audi,A4,2019,Gasoline,Automatic,248,31000
+10,Mazda,CX-5,2022,Gasoline,Automatic,187,29000
